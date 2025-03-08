@@ -1,0 +1,481 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+h2 {
+    color: #444;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/* 队列标题可编辑样式 */
+.queue-title h2 {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: inline-block;
+}
+
+.queue-title h2:hover {
+    background-color: #f0f4f8;
+}
+
+.queue-title h2.editing {
+    background-color: #f0f4f8;
+    outline: 2px solid #4a6ee0;
+}
+
+.queue-title-input {
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%;
+    border: none;
+    background-color: #f0f4f8;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: #444;
+    outline: 2px solid #4a6ee0;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 15px;
+    background-color: #f0f4f8;
+    border-radius: 6px;
+}
+
+.task-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.queue-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.task-form input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 250px;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #4a6ee0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #3a5ecc;
+}
+
+#removeQueue {
+    background-color: #e74c3c;
+}
+
+#removeQueue:hover {
+    background-color: #c0392b;
+}
+
+.danger-btn {
+    background-color: #e74c3c;
+}
+
+.danger-btn:hover {
+    background-color: #c0392b;
+}
+
+.queues-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.queue {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* 拖拽悬停效果 */
+.queue.dragover {
+    border: 2px dashed #4a6ee0;
+    background-color: #f0f4f8;
+}
+
+.queue-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.queue-items {
+    min-height: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.task-item {
+    background-color: #f8f9fa;
+    border-left: 4px solid #4a6ee0;
+    border-radius: 4px;
+    padding: 10px;
+    width: calc(25% - 10px);
+    min-width: 200px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+.task-item.dragging {
+    opacity: 0.6;
+    cursor: grabbing;
+}
+
+.task-item h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.task-item p {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 3px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.3;
+}
+
+.empty-queue-message {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+}
+
+/* 队列颜色配置 */
+.queue:nth-child(3n+1) .task-item {
+    border-left-color: #f44336;
+}
+
+.queue:nth-child(3n+1).dragover {
+    border-color: #f44336;
+}
+
+.queue:nth-child(3n+1) .queue-title h2.editing,
+.queue:nth-child(3n+1) .queue-title-input {
+    outline-color: #f44336;
+}
+
+.queue:nth-child(3n+2) .task-item {
+    border-left-color: #ff9800;
+}
+
+.queue:nth-child(3n+2).dragover {
+    border-color: #ff9800;
+}
+
+.queue:nth-child(3n+2) .queue-title h2.editing,
+.queue:nth-child(3n+2) .queue-title-input {
+    outline-color: #ff9800;
+}
+
+.queue:nth-child(3n+3) .task-item {
+    border-left-color: #4caf50;
+}
+
+.queue:nth-child(3n+3).dragover {
+    border-color: #4caf50;
+}
+
+.queue:nth-child(3n+3) .queue-title h2.editing,
+.queue:nth-child(3n+3) .queue-title-input {
+    outline-color: #4caf50;
+}
+
+/* 抽屉样式 */
+.task-drawer {
+    position: fixed;
+    top: 0;
+    right: -500px;
+    width: 500px;
+    height: 100vh;
+    background-color: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: right 0.3s ease;
+}
+
+.task-drawer.open {
+    right: 0;
+}
+
+.drawer-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.drawer-header {
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    background-color: #4a6ee0;
+    color: white;
+}
+
+.drawer-header h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.drawer-header button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: white;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.drawer-header button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.drawer-body {
+    padding: 25px;
+    flex-grow: 1;
+    overflow-y: auto;
+    background-color: #f9fafc;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.form-group input:focus {
+    border-color: #4a6ee0;
+    box-shadow: 0 0 0 3px rgba(74, 110, 224, 0.15);
+    outline: none;
+}
+
+/* 美化任务内容编辑器 */
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 15px;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 200px;
+    transition: all 0.3s ease;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    color: #333;
+    font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.form-group textarea:focus {
+    border-color: #4a6ee0;
+    box-shadow: 0 0 0 3px rgba(74, 110, 224, 0.15);
+    outline: none;
+}
+
+/* 文本域提示文本 */
+.textarea-tip {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 6px;
+    padding-left: 2px;
+    font-style: italic;
+}
+
+/* 自定义滚动条 */
+.form-group textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+.form-group textarea::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.form-group textarea::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.drawer-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+}
+
+.drawer-actions button {
+    padding: 12px 20px;
+    font-size: 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.drawer-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+#saveTaskChanges {
+    background-color: #4caf50;
+    flex: 1;
+}
+
+#saveTaskChanges:hover {
+    background-color: #3d8b40;
+}
+
+#deleteTask {
+    background-color: #e74c3c;
+    flex: 0 0 auto;
+    width: 100px;
+}
+
+#deleteTask:hover {
+    background-color: #c0392b;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    backdrop-filter: blur(2px);
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* 占位符样式 */
+::placeholder {
+    color: #aaa;
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .task-item {
+        width: 100%;
+    }
+    
+    .controls {
+        flex-direction: column;
+    }
+    
+    .task-form {
+        width: 100%;
+    }
+    
+    .task-drawer {
+        width: 100%;
+        right: -100%;
+    }
+} 

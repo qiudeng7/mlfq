@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多级反馈队列任务管理系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>多级反馈队列任务管理系统</h1>
+        
+        <div class="controls">
+            <div class="task-form">
+                <input type="text" id="taskName" placeholder="输入任务名称">
+                <button id="addTask">添加任务</button>
+            </div>
+            
+            <div class="queue-controls">
+                <button id="addQueue">添加队列</button>
+                <button id="removeQueue">减少队列</button>
+            </div>
+        </div>
+
+        <div class="queues-container" id="queues-container">
+            <!-- 队列将通过JavaScript动态生成 -->
+        </div>
+    </div>
+
+    <!-- 任务抽屉 -->
+    <div class="task-drawer" id="taskDrawer">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h2>编辑任务</h2>
+                <button id="closeDrawer">&times;</button>
+            </div>
+            <div class="drawer-body">
+                <div class="form-group">
+                    <label for="editTaskTitle">任务标题</label>
+                    <input type="text" id="editTaskTitle" placeholder="请输入任务标题...">
+                </div>
+                <div class="form-group">
+                    <label for="editTaskContent">任务内容</label>
+                    <textarea id="editTaskContent" rows="10" placeholder="请输入详细的任务内容和说明..."></textarea>
+                    <div class="textarea-tip">支持多行文本，可以添加详细说明、步骤或相关链接等</div>
+                </div>
+                <div class="drawer-actions">
+                    <button id="saveTaskChanges">保存更改</button>
+                    <button id="deleteTask" class="danger-btn">删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html> 
