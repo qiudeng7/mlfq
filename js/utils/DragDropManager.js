@@ -76,7 +76,7 @@ class DragDropManager {
             queueElement.classList.remove('dragover');
             
             const taskId = event.dataTransfer.getData('text/plain');
-            const targetQueueId = parseInt(queueElement.dataset.queueId);
+            const targetQueueId = queueElement.dataset.queueId;
             
             // 移动任务到新队列
             this.app.moveTaskToQueue(taskId, targetQueueId);

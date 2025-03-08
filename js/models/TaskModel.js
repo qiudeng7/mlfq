@@ -63,13 +63,13 @@ class TaskModel {
 
     // 获取指定队列中的所有任务
     getTasksByQueueId(queueId) {
-        return this.tasks.filter(task => task.queueId === queueId);
+        return this.tasks.filter(task => String(task.queueId) === String(queueId));
     }
 
     // 移动队列中的任务到另一个队列
     moveAllTasksFromQueueToQueue(sourceQueueId, targetQueueId) {
         this.tasks.forEach(task => {
-            if (task.queueId === sourceQueueId) {
+            if (String(task.queueId) === String(sourceQueueId)) {
                 task.queueId = targetQueueId;
             }
         });

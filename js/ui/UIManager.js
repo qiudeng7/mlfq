@@ -69,7 +69,7 @@ class UIManager {
         
         queues.forEach((queue, index) => {
             const queueElement = this.createQueueElement(queue, index);
-            const queueTasks = tasks.filter(task => task.queueId === queue.id);
+            const queueTasks = tasks.filter(task => String(task.queueId) === String(queue.id));
             
             this.renderQueueTasks(queueElement.querySelector('.queue-items'), queueTasks);
             queuesContainer.appendChild(queueElement);
@@ -208,7 +208,7 @@ class UIManager {
         if (!newTitle) {
             // 如果标题为空，获取队列索引并使用默认标题
             const queues = this.app.getAllQueues();
-            const queueIndex = queues.findIndex(q => q.id === queueId);
+            const queueIndex = queues.findIndex(q => String(q.id) === String(queueId));
             newTitle = `队列 ${queueIndex + 1}`;
         }
         

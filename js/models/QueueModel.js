@@ -59,7 +59,7 @@ class QueueModel {
 
     // 获取队列
     getQueue(queueId) {
-        return this.queues.find(q => q.id === queueId);
+        return this.queues.find(q => String(q.id) === String(queueId));
     }
 
     // 更新队列名称
@@ -79,7 +79,7 @@ class QueueModel {
 
     // 判断队列是否存在
     hasQueue(queueId) {
-        return this.queues.some(q => q.id === queueId);
+        return this.queues.some(q => String(q.id) === String(queueId));
     }
 
     // 获取所有队列

@@ -69,12 +69,16 @@ class App {
     
     // 添加任务
     addTask(title, content = '') {
-        const highestPriorityQueueId = this.queueModel.getHighestPriorityQueueId();
-        if (!highestPriorityQueueId) {
+        // 修复Bug: 确保队列存在且能正确获取ID
+        const queues = this.queueModel.getAllQueues();
+        if (queues.length === 0) {
             alert('请先添加至少一个队列！');
             return false;
         }
         
+        const highestPriorityQueueId = queues[0].id;
+        
+        // 创建新任务并添加到队列
         this.taskModel.createTask(title, content, highestPriorityQueueId);
         this.saveData();
         this.renderUI();
