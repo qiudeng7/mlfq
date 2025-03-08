@@ -69,7 +69,9 @@ class UIManager {
         
         queues.forEach((queue, index) => {
             const queueElement = this.createQueueElement(queue, index);
-            const queueTasks = tasks.filter(task => String(task.queueId) === String(queue.id));
+            
+            // 获取并按顺序排序队列中的任务
+            const queueTasks = this.app.taskModel.getTasksByQueueId(queue.id);
             
             this.renderQueueTasks(queueElement.querySelector('.queue-items'), queueTasks);
             queuesContainer.appendChild(queueElement);
@@ -130,6 +132,7 @@ class UIManager {
         taskElement.className = 'task-item';
         taskElement.id = task.id;
         taskElement.draggable = true;
+        taskElement.dataset.order = task.order || 0;
         
         // 截取内容的前100个字符作为预览
         const contentPreview = task.content ? task.content.substring(0, 100) + (task.content.length > 100 ? '...' : '') : '';

@@ -213,6 +213,28 @@ button:hover {
     padding: 10px;
 }
 
+/* 插入标记样式 */
+.insert-marker {
+    height: 3px;
+    background-color: #4a6ee0;
+    margin: 5px 0;
+    border-radius: 3px;
+    animation: pulse 1.5s infinite;
+    width: 100%;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.5;
+    }
+}
+
 /* 队列颜色配置 */
 .queue:nth-child(3n+1) .task-item {
     border-left-color: #f44336;
@@ -225,6 +247,10 @@ button:hover {
 .queue:nth-child(3n+1) .queue-title h2.editing,
 .queue:nth-child(3n+1) .queue-title-input {
     outline-color: #f44336;
+}
+
+.queue:nth-child(3n+1) .insert-marker {
+    background-color: #f44336;
 }
 
 .queue:nth-child(3n+2) .task-item {
@@ -240,6 +266,10 @@ button:hover {
     outline-color: #ff9800;
 }
 
+.queue:nth-child(3n+2) .insert-marker {
+    background-color: #ff9800;
+}
+
 .queue:nth-child(3n+3) .task-item {
     border-left-color: #4caf50;
 }
@@ -251,6 +281,10 @@ button:hover {
 .queue:nth-child(3n+3) .queue-title h2.editing,
 .queue:nth-child(3n+3) .queue-title-input {
     outline-color: #4caf50;
+}
+
+.queue:nth-child(3n+3) .insert-marker {
+    background-color: #4caf50;
 }
 
 /* 抽屉样式 */
