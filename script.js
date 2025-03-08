@@ -42,8 +42,50 @@ document.addEventListener('DOMContentLoaded', function() {
     // 添加全局按键事件，处理队列名称编辑的回车和Esc键
     document.addEventListener('keydown', handleGlobalKeydown);
     
+    // 添加Ctrl+S快捷键监听
+    document.addEventListener('keydown', handleShortcuts);
+    
     // 设置拖拽功能
     setupDragAndDrop();
+    
+    // 处理快捷键
+    function handleShortcuts(event) {
+        // 检测Ctrl+S (Windows) 或 Command+S (Mac)
+        if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+            // 阻止默认的保存网页行为
+            event.preventDefault();
+            
+            // 保存当前数据到localStorage
+            saveToLocalStorage();
+            
+            // 提供保存成功的视觉反馈
+            showSaveNotification();
+        }
+    }
+    
+    // 显示保存成功通知
+    function showSaveNotification() {
+        // 创建通知元素
+        const notification = document.createElement('div');
+        notification.className = 'save-notification';
+        notification.textContent = '数据已保存';
+        
+        // 添加到页面
+        document.body.appendChild(notification);
+        
+        // 应用动画
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+        
+        // 一段时间后移除通知
+        setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 2000);
+    }
     
     // 添加新任务
     function addTask() {
