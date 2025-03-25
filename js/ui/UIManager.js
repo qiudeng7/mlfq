@@ -5,6 +5,7 @@ class UIManager {
         this.app = app;
         this.editingQueueId = null;
         this.editingTaskId = null;
+        this.autoSaveTimer = null; // 添加自动保存计时器
         
         // 缓存DOM元素
         this.elements = {
@@ -37,9 +38,39 @@ class UIManager {
         this.elements.saveTaskChangesButton.addEventListener('click', () => this.saveTaskChanges());
         this.elements.deleteTaskButton.addEventListener('click', () => this.deleteTask());
         
+        // 自动保存事件
+        this.elements.editTaskTitleInput.addEventListener('input', () => this.startAutoSave());
+        this.elements.editTaskContentInput.addEventListener('input', () => this.startAutoSave());
+        
         // 全局事件
         document.addEventListener('click', (e) => this.handleGlobalClick(e));
         document.addEventListener('keydown', (e) => this.handleGlobalKeydown(e));
+    }
+    
+    // 启动自动保存计时器
+    startAutoSave() {
+        // 清除之前的计时器
+        if (this.autoSaveTimer) {
+            clearTimeout(this.autoSaveTimer);
+        }
+        
+        // 设置新的计时器，每0.5秒保存一次
+        this.autoSaveTimer = setTimeout(() => {
+            this.autoSaveTask();
+        }, 500);
+    }
+    
+    // 自动保存任务
+    autoSaveTask() {
+        if (!this.editingTaskId) return;
+        
+        const title = this.elements.editTaskTitleInput.value.trim();
+        const content = this.elements.editTaskContentInput.value.trim();
+        
+        if (!title) return; // 标题为空不保存
+        
+        // 静默更新任务，传入silentSave=true不显示保存通知
+        this.app.updateTask(this.editingTaskId, title, content, true);
     }
     
     // 处理添加任务
@@ -290,6 +321,22 @@ class UIManager {
     
     // 关闭任务抽屉
     closeDrawer() {
+        // 先保存任务内容
+        if (this.editingTaskId) {
+            const title = this.elements.editTaskTitleInput.value.trim();
+            const content = this.elements.editTaskContentInput.value.trim();
+            
+            if (title) {
+                this.app.updateTask(this.editingTaskId, title, content, true);
+            }
+        }
+        
+        // 清除自动保存计时器
+        if (this.autoSaveTimer) {
+            clearTimeout(this.autoSaveTimer);
+            this.autoSaveTimer = null;
+        }
+        
         this.elements.taskDrawer.classList.remove('open');
         this.elements.overlay.classList.remove('active');
         this.editingTaskId = null;

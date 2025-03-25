@@ -120,10 +120,25 @@ class App {
     }
     
     // 更新任务
-    updateTask(taskId, title, content) {
+    updateTask(taskId, title, content, silentSave = false) {
         const success = this.taskModel.updateTask(taskId, title, content);
         if (success) {
-            this.saveData();
+            // 保存数据但不显示通知
+            const data = {
+                tasks: this.taskModel.tasks,
+                queues: this.queueModel.queues,
+                counters: {
+                    task: this.taskModel.taskIdCounter,
+                    queue: this.queueModel.queueIdCounter
+                }
+            };
+            
+            const result = this.storageService.saveData(data);
+            // 仅在非静默保存时显示通知
+            if (result && !silentSave) {
+                this.uiManager.showSaveNotification();
+            }
+            
             this.renderUI();
         }
         return success;
